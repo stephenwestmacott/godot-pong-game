@@ -1,0 +1,56 @@
+[gd_scene load_steps=3 format=3 uid="uid://f35n3560jy22"]
+
+[ext_resource type="Script" path="res://Scripts/Menu.gd" id="1_dvmni"]
+[ext_resource type="FontFile" uid="uid://bvmpoutd42qpq" path="res://Assets/70SdiscopersonaluseBold-w14z2.otf" id="1_hl282"]
+
+[node name="Menu" type="Node2D"]
+script = ExtResource("1_dvmni")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0, 0, 0, 1)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ColorRect"]
+layout_mode = 0
+offset_left = 143.0
+offset_top = -59.0
+offset_right = 909.0
+offset_bottom = 413.0
+theme_override_fonts/normal_font = ExtResource("1_hl282")
+theme_override_font_sizes/normal_font_size = 200
+bbcode_enabled = true
+text = "
+[center]Pong"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_left = 386.0
+offset_top = 362.0
+offset_right = 766.0
+offset_bottom = 546.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Single" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Single Player"
+
+[node name="Two" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Two Player"
+
+[node name="Settings" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Settings"
+
+[node name="Quit" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Quit"
+
+[connection signal="pressed" from="VBoxContainer/Single" to="." method="_on_single_pressed"]
+[connection signal="pressed" from="VBoxContainer/Two" to="." method="_on_two_pressed"]
+[connection signal="pressed" from="VBoxContainer/Quit" to="." method="_on_quit_pressed"]

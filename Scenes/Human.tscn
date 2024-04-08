@@ -1,0 +1,126 @@
+[gd_scene load_steps=14 format=3 uid="uid://drr4r5kthrk4u"]
+
+[ext_resource type="Script" path="res://Scripts/Main.gd" id="1_lgdh8"]
+[ext_resource type="Script" path="res://Scripts/LeftPaddleHuman.gd" id="2_clnlr"]
+[ext_resource type="Script" path="res://Scripts/RightPaddle.gd" id="3_nw4ij"]
+[ext_resource type="Script" path="res://Scripts/Ball.gd" id="4_c6j2k"]
+[ext_resource type="Texture2D" uid="uid://c0h6ipt1ohdfn" path="res://Assets/PongBall.png" id="5_uqrb5"]
+[ext_resource type="AudioStream" uid="uid://dr5ypttn77aw5" path="res://Assets/Paddle_SFX.wav" id="6_21cvi"]
+[ext_resource type="AudioStream" uid="uid://byxakrwroa0xr" path="res://Assets/Wall_SFX.wav" id="7_rqbt2"]
+[ext_resource type="AudioStream" uid="uid://dxkc0lrdlxgwn" path="res://Assets/Goal_SFX.wav" id="8_vypf8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wx7wn"]
+size = Vector2(15, 141)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fsiqd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c8cb5"]
+size = Vector2(1152, 10)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jitrn"]
+size = Vector2(10, 648)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1foh6"]
+size = Vector2(10, 648)
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_lgdh8")
+
+[node name="BG" type="ColorRect" parent="."]
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0, 0, 0, 1)
+
+[node name="LeftPaddle" type="CharacterBody2D" parent="."]
+position = Vector2(20, 324)
+script = ExtResource("2_clnlr")
+
+[node name="ColorRect" type="ColorRect" parent="LeftPaddle"]
+offset_left = -8.0
+offset_top = -71.0
+offset_right = 7.0
+offset_bottom = 70.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftPaddle"]
+shape = SubResource("RectangleShape2D_wx7wn")
+
+[node name="RightPaddle" type="CharacterBody2D" parent="."]
+position = Vector2(1132, 324)
+script = ExtResource("3_nw4ij")
+
+[node name="ColorRect" type="ColorRect" parent="RightPaddle"]
+offset_left = -7.0
+offset_top = -70.0
+offset_right = 8.0
+offset_bottom = 71.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightPaddle"]
+shape = SubResource("RectangleShape2D_wx7wn")
+
+[node name="Ball" type="CharacterBody2D" parent="."]
+position = Vector2(571, 324)
+script = ExtResource("4_c6j2k")
+
+[node name="Sprite2D" type="Sprite2D" parent="Ball"]
+position = Vector2(0.5, 0.601074)
+scale = Vector2(0.100962, 0.100962)
+texture = ExtResource("5_uqrb5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ball"]
+position = Vector2(0.5, 0.600952)
+shape = SubResource("CircleShape2D_fsiqd")
+
+[node name="NewBallTimer" type="Timer" parent="Ball"]
+
+[node name="PaddleAudio" type="AudioStreamPlayer" parent="Ball"]
+stream = ExtResource("6_21cvi")
+
+[node name="WallAudio" type="AudioStreamPlayer" parent="Ball"]
+stream = ExtResource("7_rqbt2")
+
+[node name="GoalAudio" type="AudioStreamPlayer" parent="Ball"]
+stream = ExtResource("8_vypf8")
+
+[node name="Borders" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Borders"]
+position = Vector2(576, -5)
+shape = SubResource("RectangleShape2D_c8cb5")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Borders"]
+position = Vector2(576, 653)
+shape = SubResource("RectangleShape2D_c8cb5")
+
+[node name="LeftNet" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftNet"]
+position = Vector2(-5, 324)
+shape = SubResource("RectangleShape2D_jitrn")
+
+[node name="RightNet" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightNet"]
+position = Vector2(1157, 324)
+shape = SubResource("RectangleShape2D_1foh6")
+
+[node name="LeftScoreLabel" type="RichTextLabel" parent="."]
+offset_left = 469.0
+offset_top = -25.0
+offset_right = 682.0
+offset_bottom = 255.0
+theme_override_font_sizes/normal_font_size = 100
+text = "0"
+
+[node name="RightScoreLabel" type="RichTextLabel" parent="."]
+offset_left = 621.0
+offset_top = -25.0
+offset_right = 834.0
+offset_bottom = 255.0
+theme_override_font_sizes/normal_font_size = 100
+text = "0"
+
+[connection signal="timeout" from="Ball/NewBallTimer" to="Ball" method="_on_new_ball_timer_timeout"]
+[connection signal="body_entered" from="LeftNet" to="." method="_on_left_net_body_entered"]
+[connection signal="body_entered" from="LeftNet" to="Ball" method="_on_left_net_body_entered"]
+[connection signal="body_entered" from="RightNet" to="." method="_on_right_net_body_entered"]
+[connection signal="body_entered" from="RightNet" to="Ball" method="_on_right_net_body_entered"]
